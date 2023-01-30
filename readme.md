@@ -61,7 +61,7 @@ Running `java -jar target/myapp-1.0-SNAPSHOT.jar` requires http://maven.apache.o
 # Runnable Jar:
 JAR Plugin
 The Maven’s jar plugin will create jar file and we need to define the main class that will get executed when we run the jar file.
-
+```
 <plugin>
   <artifactId>maven-jar-plugin</artifactId>
   <version>3.0.2</version>
@@ -74,3 +74,4 @@ The Maven’s jar plugin will create jar file and we need to define the main cla
     </archive>
   </configuration>
 </plugin>
+```
