@@ -75,3 +75,71 @@ The Maven’s jar plugin will create jar file and we need to define the main cla
   </configuration>
 </plugin>
 ```
+
+
+# Folder tree before package:
+```
+├── pom.xml
+└── src
+    ├── main
+    │   └── java
+    │       └── com
+    │           └── myapp
+    │               └── app
+    │                   └── App.java
+    └── test
+        └── java
+            └── com
+                └── myapp
+                    └── app
+                        └── AppTest.java
+
+```
+# Folder tree after package:
+.
+├── pom.xml
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com
+│   │           └── myapp
+│   │               └── app
+│   │                   └── App.java
+│   └── test
+│       └── java
+│           └── com
+│               └── myapp
+│                   └── app
+│                       └── AppTest.java
+└── target
+    ├── classes
+    │   └── com
+    │       └── myapp
+    │           └── app
+    │               └── App.class
+    ├── generated-sources
+    │   └── annotations
+    ├── generated-test-sources
+    │   └── test-annotations
+    ├── maven-archiver
+    │   └── pom.properties
+    ├── maven-status
+    │   └── maven-compiler-plugin
+    │       ├── compile
+    │       │   └── default-compile
+    │       │       ├── createdFiles.lst
+    │       │       └── inputFiles.lst
+    │       └── testCompile
+    │           └── default-testCompile
+    │               ├── createdFiles.lst
+    │               └── inputFiles.lst
+    ├── myapp-1.0-SNAPSHOT.jar
+    ├── surefire-reports
+    │   ├── com.myapp.app.AppTest.txt
+    │   └── TEST-com.myapp.app.AppTest.xml
+    └── test-classes
+        └── com
+            └── myapp
+                └── app
+                    └── AppTest.class
+```
