@@ -95,6 +95,7 @@ The Maven’s jar plugin will create jar file and we need to define the main cla
                         └── AppTest.java
 
 ```
+```
 # Folder tree after package:
 .
 ├── pom.xml
