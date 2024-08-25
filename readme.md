@@ -54,7 +54,7 @@ Running `mvn package` does a compile and creates the target directory, including
     murphy:myapp pdurbin$ java -cp target/myapp-1.0-SNAPSHOT.jar com.myapp.app.App
     Hello World!
 
-Running `mvn clean compile exec:java` requires http://mojo.codehaus.org/exec-maven-plugin/
+Running `mvn clean compile exec:java` requires https://www.mojohaus.org/exec-maven-plugin/
 
 Running `java -jar target/myapp-1.0-SNAPSHOT.jar` requires http://maven.apache.org/plugins/maven-shade-plugin/
 
