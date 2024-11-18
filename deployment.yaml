@@ -1,0 +1,23 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: maven-hello-world
+spec:
+  template:
+    metadata:
+      labels:
+        app: maven-hello-world
+    spec:
+      containers:
+        - name: maven-hello-world
+          image: tbd/maven-hello-world:DOCKER_IMAGE_TAG
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+      restartPolicy: Never
+  backoffLimit: 4
