@@ -5,9 +5,9 @@ env:
   DOCKER_REGISTRY_USERNAME: szaitman
 on:
   # workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
