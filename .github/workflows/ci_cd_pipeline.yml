@@ -40,8 +40,8 @@ jobs:
           
       - name: Commit and push version bump
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
+          git config --global user.name 'zshuki'
+          git config --global user.email 'zshuki@gmail.com'
           git add pom.xml
           git commit -m 'Increment minor version'
           git push origin main
