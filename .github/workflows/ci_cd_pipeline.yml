@@ -49,7 +49,7 @@ jobs:
           git config --global user.email 'zshuki@gmail.com'
           git add pom.xml
           git commit -m 'Increment minor version'
-          git push origin main
+          git push
 
   build-and-push:
     runs-on: ubuntu-latest
