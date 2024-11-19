@@ -62,7 +62,7 @@ jobs:
 
       - name: Get the current version 
         run: |
-          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. '{$3+=1; print $1"."$2"."$3}')
           echo "New version: $new_version"
           echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
       
@@ -84,6 +84,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get the current version 
+        run: |
+          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. '{$3+=1; print $1"."$2"."$3}')
+          echo "New version: $new_version"
+          echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
+  
       - name: Log in to Docker Registry
         run: docker login -u ${{ env.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
 
