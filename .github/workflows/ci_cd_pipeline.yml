@@ -4,8 +4,11 @@ env:
   DOCKER_IMAGE_NAME: szaitman/maven-hello-world
   DOCKER_REGISTRY_USERNAME: szaitman
 on:
-  workflow_dispatch:
-  push:
+  # workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  pull_request:
     branches:
       - main
 
