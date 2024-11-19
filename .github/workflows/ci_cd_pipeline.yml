@@ -41,7 +41,7 @@ jobs:
       # mvn versions:set -DnewVersion=patch
 
       # Get the current version 
-      - name: Get the new version 
+      - name: Get the current version 
         # id: version_step
         run: |
           new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
@@ -69,6 +69,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get the current version 
+        run: |
+          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "New version: $new_version"
+          echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
+      
       - name: Print Variable
         run: echo "DOCKER_IMAGE_TAG ${{ env.DOCKER_IMAGE_TAG }}"
           
