@@ -54,7 +54,6 @@ jobs:
       - name: Set output variable
         id: set_output
         run: echo "::set-output name=result::Hello from Job 1"
-        run: echo "my_output=Hello from Job 1" >> $GITHUB_OUTPUT
 
 
   build-and-push:
