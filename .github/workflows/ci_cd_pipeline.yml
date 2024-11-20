@@ -4,7 +4,7 @@ env:
   DOCKER_IMAGE_NAME: szaitman/maven-hello-world
   DOCKER_REGISTRY_USERNAME: szaitman
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   increment-version:
@@ -46,7 +46,8 @@ jobs:
           git commit -m 'Increment minor version'
           git push
       - name: set_ver
-        run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
+        # run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
+        run: echo "::set-output g_run_id=result::${{ github.run_id }}"
 
 
   build-and-push:
@@ -112,5 +113,19 @@ jobs:
   #       uses: azure/login@v1
   #       with:
   #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+  #     - name: delete job
+  #       run: kubectl delete  -f deployment.yaml
+
   #     - name: Apply Kubernetes Manifest
   #       run: sed -e  "s/DOCKER_IMAGE_TAG/${{ env.DOCKER_IMAGE_TAG }}/" deployment.yaml | kubectl apply -f -
+
+  #     - name: get pod info
+  #       run: |
+  #         sleep 30
+  #         kubectl get pod | grep maven-hello-world | awk '{print $1}'
+  #         kubectl logs $(kubectl get pod | grep maven-hello-world | awk '{print $1}')
+
+  #     - name: cleanup
+  #       run: kubectl delete  -f deployment.yaml
+
