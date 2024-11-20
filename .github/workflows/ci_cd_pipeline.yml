@@ -55,8 +55,7 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add pom.xml
           git commit -m 'Increment minor version'
-          git tag ${{ env.DOCKER_IMAGE_TAG }}
-          git push origin ${{ env.DOCKER_IMAGE_TAG }}
+          git push origin ${{ env.GITHUB_REF_NAME }}
 
       - name: set_ver
         run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
