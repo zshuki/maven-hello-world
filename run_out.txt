@@ -1,0 +1,29 @@
+
+          cls k3d-mycluster (ns default)
+17:57:05  ~/my_dev/refale/maven-hello-world [ maven-hello-world  ]
+✓ (0) mewm-szaitman $ kubectl get pods -o 'custom-columns=:metadata.name,:status.containerStatuses[0].image,:status.phase,creationTime:.metadata.creationTimestamp'
+                                                                                            creationTime
+maven-hello-world-679bf7d894-l9427   docker.io/szaitman/maven-hello-world:1.0.9   Running   2024-11-20T15:57:04Z
+
+          cls k3d-mycluster (ns default)
+17:57:11  ~/my_dev/refale/maven-hello-world [ maven-hello-world  ]
+✓ (0) mewm-szaitman $ nss-ubu-while-cmd -i 30 "kubectl get pod"
+start nss-ubu-while-cmd - interval (sec) = 30
++---------------------------------------------------------+
+Wed Nov 20 17:57:21 IST 2024
++---------------------------------------------------------+
+NAME                                 READY   STATUS      RESTARTS      AGE
+maven-hello-world-679bf7d894-l9427   0/1     Completed   1 (13s ago)   18s
+---
++---------------------------------------------------------+
+Wed Nov 20 17:57:52 IST 2024
++---------------------------------------------------------+
+NAME                                 READY   STATUS             RESTARTS      AGE
+maven-hello-world-679bf7d894-l9427   0/1     CrashLoopBackOff   2 (20s ago)   48s
+---
++---------------------------------------------------------+
+Wed Nov 20 17:58:22 IST 2024
++---------------------------------------------------------+
+NAME                                 READY   STATUS             RESTARTS      AGE
+maven-hello-world-679bf7d894-l9427   0/1     CrashLoopBackOff   3 (19s ago)   78s
+---

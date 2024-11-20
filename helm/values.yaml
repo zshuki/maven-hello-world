@@ -1,0 +1,16 @@
+
+replicaCount: 1
+
+image:
+  repository: szaitman/maven-hello-world
+  pullPolicy: Always
+  tag: "1.0.0"  ### TBD empty
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
