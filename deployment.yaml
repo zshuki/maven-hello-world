@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: maven-hello-world
-          image: tbd/maven-hello-world:DOCKER_IMAGE_TAG
+          image: szaitman/maven-hello-world:DOCKER_IMAGE_TAG
           resources:
             requests:
               memory: "64Mi"

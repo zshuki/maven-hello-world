@@ -4,23 +4,19 @@ env:
   DOCKER_IMAGE_NAME: szaitman/maven-hello-world
   DOCKER_REGISTRY_USERNAME: szaitman
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
 
 jobs:
   increment-version:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: myapp
 
     steps:
       - name: Checkout code
-        # uses: actions/checkout@v3
         uses: actions/checkout@v2.3.2
-
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -30,23 +26,14 @@ jobs:
 
       - name: Increment version
         run: mvn versions:set -DnewVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. '{$3+=1; print $1"."$2"."$3}') -DgenerateBackupPoms=false
-
-      - name: Get the current version 
+        
+      - name: Commit and push version
         run: |
-          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "New version: $new_version"
-          echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
-
-      - name: Print Variable
-        run: echo "DOCKER_IMAGE_TAG ${{ env.DOCKER_IMAGE_TAG }}"
-          
-      - name: Commit and push version bump
-        run: |
-          git config --global user.name 'zshuki'
-          git config --global user.email 'zshuki@gmail.com'
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'        
           git add pom.xml
-          git commit -m 'Increment minor version'
-          git push origin main
+          git commit -m 'Increment patch version'
+          git push
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -59,7 +46,7 @@ jobs:
 
       - name: Get the current version 
         run: |
-          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. '{$3+=1; print $1"."$2"."$3}')
           echo "New version: $new_version"
           echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
       
@@ -74,13 +61,19 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: build-and-push
+    needs: [increment-version, build-and-push]
     defaults:
       run:
         working-directory: myapp
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get the current version 
+        run: |
+          new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. '{$3+=1; print $1"."$2"."$3}')
+          echo "New version: $new_version"
+          echo "DOCKER_IMAGE_TAG=$new_version" >> $GITHUB_ENV
+  
       - name: Log in to Docker Registry
         run: docker login -u ${{ env.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
 
@@ -90,14 +83,28 @@ jobs:
       - name: Run Docker for test
         run: docker run ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    steps:
-      - uses: actions/checkout@v3
-      - name: Configure kubectl
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Apply Kubernetes Manifest
-        run: sed -e  "s/DOCKER_IMAGE_TAG/${{ env.DOCKER_IMAGE_TAG }}/" deployment.yaml | kubectl apply -f -
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Configure kubectl
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+  #     - name: delete job
+  #       run: kubectl delete  -f deployment.yaml
+
+  #     - name: Apply Kubernetes Manifest
+  #       run: sed -e  "s/DOCKER_IMAGE_TAG/${{ env.DOCKER_IMAGE_TAG }}/" deployment.yaml | kubectl apply -f -
+
+  #     - name: get pod info
+  #       run: |
+  #         sleep 10
+  #         kubectl get pod | grep maven-hello-world | awk '{print $1}'
+  #         kubectl logs $(kubectl get pod | grep maven-hello-world | awk '{print $1}')
+
+  #     - name: cleanup
+  #       run: kubectl delete  -f deployment.yaml
+
