@@ -87,7 +87,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: build-and-push
+    needs: [increment-version, build-and-push]
     defaults:
       run:
         working-directory: myapp
