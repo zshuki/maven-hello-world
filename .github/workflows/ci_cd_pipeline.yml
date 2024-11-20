@@ -52,7 +52,7 @@ jobs:
       - name: Commit and push version bump
         run: |
           git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com          
+          git config --global user.email 'github-actions@github.com'
           git add pom.xml
           git commit -m 'Increment minor version'
           git tag ${{ env.DOCKER_IMAGE_TAG }}
