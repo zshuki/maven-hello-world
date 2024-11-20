@@ -10,7 +10,7 @@ jobs:
   increment-version:
     runs-on: ubuntu-latest
     outputs:
-      random_number: ${{ steps.set_ver.outputs.g_run_id }}
+      g_run_id: ${{ steps.set_ver.outputs.result }}
 
     defaults:
       run:
@@ -47,7 +47,9 @@ jobs:
           git push
       - name: set_ver
         # run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
-        run: echo "::set-output g_run_id=result::${{ github.run_id }}"
+        # run: echo "::set-output g_run_id=result::${{ github.run_id }}"
+        run: echo "::set-output name=result::${{ github.run_id }}"
+
 
 
   build-and-push:
