@@ -48,14 +48,17 @@ jobs:
 
       - name: Print Variable
         run: echo "DOCKER_IMAGE_TAG ${{ env.DOCKER_IMAGE_TAG }}"
-          
+      
+      - name: Print env
+        run: env
+
       - name: Commit and push version bump
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add pom.xml
           git commit -m 'Increment minor version'
-          git push origin ${{ env.GITHUB_REF_NAME }}
+          git push origin ${{ env.GITHUB_HEAD_REF }}
 
       - name: set_ver
         run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
