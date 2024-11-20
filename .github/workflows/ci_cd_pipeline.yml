@@ -51,6 +51,8 @@ jobs:
       
       - name: Print env
         run: env
+      - name: Print GITHUB_HEAD_REF
+        run: echo $GITHUB_HEAD_REF
 
       - name: Commit and push version bump
         run: |
@@ -58,7 +60,7 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add pom.xml
           git commit -m 'Increment minor version'
-          git push origin ${{ env.GITHUB_HEAD_REF }}
+          git push origin $GITHUB_HEAD_REF
 
       - name: set_ver
         run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
