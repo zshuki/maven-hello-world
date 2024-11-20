@@ -10,7 +10,8 @@ jobs:
   increment-version:
     runs-on: ubuntu-latest
     outputs:
-      g_run_id: ${{ steps.set_ver.outputs.result }}
+      # g_run_id: ${{ steps.set_ver.outputs.result }}
+      my_output: ${{ steps.set_output.outputs.result }}
 
     defaults:
       run:
@@ -45,11 +46,18 @@ jobs:
           git add pom.xml
           git commit -m 'Increment minor version'
           git push
-      - name: set_ver
-        # run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
-        # run: echo "::set-output g_run_id=result::${{ github.run_id }}"
-        run: echo "::set-output name=result::${{ github.run_id }}"
+      # - name: set_ver
+      #   # run: echo "g_run_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
+      #   # run: echo "::set-output g_run_id=result::${{ github.run_id }}"
+      #   run: echo "::set-output name=result::${{ github.run_id }}"
 
+      - name: Set output variable
+        id: set_output
+        #run: echo "::set-output name=result::Hello from Job 1"
+        # Note: Replace `::set-output` with `$GITHUB_ENV` if necessary
+        # Example for GITHUB_ENV:
+        #run: echo "my_output=Hello from Job 1" >> $GITHUB_ENV
+        run: echo "my_output=Hello from Job 1" >> $GITHUB_OUTPUT
 
 
   build-and-push:
@@ -61,8 +69,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use g_run_id
-        run: echo "g_run_id is - ${{ needs.increment-version.outputs.g_run_id }}"
+      - name: Use output from increment-version
+        run: echo "Job 1 said ${{ needs.increment-version.outputs.my_output }}"
+      # - name: Use g_run_id
+      #   run: echo "g_run_id is - ${{ needs.increment-version.outputs.g_run_id }}"
 
       - name: Get the current version 
         run: |
